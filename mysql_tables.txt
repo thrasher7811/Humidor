@@ -1,41 +1,61 @@
-MariaDB [my_humidor]> DESCRIBE humidor_now;
-+---------------------+------------------+------+-----+---------+----------------+
-| Field               | Type             | Null | Key | Default | Extra          |
-+---------------------+------------------+------+-----+---------+----------------+
-| id                  | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
-| humidor_temperature | int(11)          | YES  |     | NULL    |                |
-| humidor_humidity    | int(11)          | YES  |     | NULL    |                |
-| ambient_temperature | int(11)          | YES  |     | NULL    |                |
-| ambient_humidity    | int(11)          | YES  |     | NULL    |                |
-| entered             | datetime         | YES  |     | NULL    |                |
-+---------------------+------------------+------+-----+---------+----------------+
-6 rows in set (0.01 sec)
 
-MariaDB [my_humidor]> DESCRIBE humidor_entry;
+mysql> Describe cigar;
++---------+------------------+------+-----+---------+----------------+
+| Field   | Type             | Null | Key | Default | Extra          |
++---------+------------------+------+-----+---------+----------------+
+| id      | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(20)      | NO   |     | NULL    |                |
+| qty     | int(10) unsigned | NO   |     | NULL    |                |
+| maker   | varchar(20)      | YES  |     | NULL    |                |
+| ring    | int(10) unsigned | YES  |     | NULL    |                |
+| length  | int(10) unsigned | YES  |     | NULL    |                |
+| entered | datetime         | YES  |     | NULL    |                |
+| seller  | varchar(20)      | YES  |     | NULL    |                |
+| picture | varchar(60)      | YES  |     | NULL    |                |
++---------+------------------+------+-----+---------+----------------+
+9 rows in set (0.01 sec)
+
+mysql> describe event;
++--------------+------------------+------+-----+---------+----------------+
+| Field        | Type             | Null | Key | Default | Extra          |
++--------------+------------------+------+-----+---------+----------------+
+| id           | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| entered      | datetime         | YES  |     | NULL    |                |
+| location     | varchar(30)      | YES  |     | NULL    |                |
+| cigar        | int(11)          | NO   |     | NULL    |                |
+| participant1 | varchar(20)      | YES  |     | NULL    |                |
+| participant2 | varchar(20)      | YES  |     | NULL    |                |
+| participant3 | varchar(20)      | YES  |     | NULL    |                |
+| participant4 | varchar(20)      | YES  |     | NULL    |                |
+| participant5 | varchar(20)      | YES  |     | NULL    |                |
+| pairing      | varchar(20)      | YES  |     | NULL    |                |
+| rating       | int(11)          | YES  |     | NULL    |                |
+| picture      | varchar(60)      | YES  |     | NULL    |                |
++--------------+------------------+------+-----+---------+----------------+
+12 rows in set (0.00 sec)
+
+mysql> describe humidor_now;
 +---------------------+------------------+------+-----+---------+----------------+
 | Field               | Type             | Null | Key | Default | Extra          |
 +---------------------+------------------+------+-----+---------+----------------+
 | id                  | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
-| humidor_temperature | int(11)          | YES  |     | NULL    |                |
-| humidor_humidity    | int(11)          | YES  |     | NULL    |                |
-| ambient_temperature | int(11)          | YES  |     | NULL    |                |
-| ambient_humidity    | int(11)          | YES  |     | NULL    |                |
-| entered             | datetime         | YES  |     | NULL    |                |
+| humidor_temperature | double unsigned  | YES  |     | NULL    |                |
+| humidor_humidity    | double unsigned  | YES  |     | NULL    |                |
+| ambient_temperature | double unsigned  | YES  |     | NULL    |                |
+| ambient_humidity    | double unsigned  | YES  |     | NULL    |                |
+| entered             | datetime         | NO   |     | NULL    |                |
 +---------------------+------------------+------+-----+---------+----------------+
 6 rows in set (0.00 sec)
 
-MariaDB [my_humidor]> DESCRIBE cigar;
-+-----------+------------------+------+-----+---------+----------------+
-| Field     | Type             | Null | Key | Default | Extra          |
-+-----------+------------------+------+-----+---------+----------------+
-| id        | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
-| name      | varchar(15)      | NO   |     | NULL    |                |
-| qty       | int(10) unsigned | YES  |     | NULL    |                |
-| maker     | varchar(15)      | YES  |     | NULL    |                |
-| ring      | int(10) unsigned | NO   |     | NULL    |                |
-| length    | int(10) unsigned | NO   |     | NULL    |                |
-| purchased | date             | YES  |     | NULL    |                |
-| seller    | varchar(15)      | YES  |     | NULL    |                |
-| picture   | varchar(20)      | YES  |     | NULL    |                |
-+-----------+------------------+------+-----+---------+----------------+
-9 rows in set (0.01 sec)
+mysql> describe humidor_entry;
++---------------------+------------------+------+-----+---------+----------------+
+| Field               | Type             | Null | Key | Default | Extra          |
++---------------------+------------------+------+-----+---------+----------------+
+| id                  | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| humidor_temperature | double unsigned  | YES  |     | NULL    |                |
+| humidor_humidity    | double unsigned  | YES  |     | NULL    |                |
+| ambient_temperature | double unsigned  | YES  |     | NULL    |                |
+| ambient_humidity    | double unsigned  | YES  |     | NULL    |                |
+| entered             | datetime         | NO   |     | NULL    |                |
++---------------------+------------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
