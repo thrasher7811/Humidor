@@ -1,0 +1,104 @@
+<!--
+   dataDisplay.html  
+   
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>My Humidor</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="Cache-control" content="no-cache" />
+	<meta name="generator" content="Geany 1.32" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href= "{{ url_for('static',filename='styles/w3.css') }}">
+</head>
+
+<body bgcolor="#4d4d4d">
+	<div class="w3-padding-32 w3-black" align="center">
+		<h1>My Humidor</h1>
+	</div>
+	<div class="w3-padding-16" align="center">
+		<!-- Home Button -->
+		<div style="width:22%; display: inline-block"><form action="/">
+		<input class="topbutton topbutton1"  type="submit" value="Home">
+		</form></div>
+		<!-- Cigars Button -->
+		<div style="width:22%; display: inline-block"><form action="/cigars">
+		<input class="topbutton topbutton1"  type="submit" value="Cigars">
+		</form></div>
+		<!-- Smokes Button -->
+		<div style="width:22%; display: inline-block"><form action="/events">
+		<input class="topbutton topbutton1"  type="submit" value="Events">
+		</form></div>
+		<!-- Stats Button -->
+		<div style="width:22%; display: inline-block"><form action="/stats">
+		<input class="topbutton topbutton1"  type="submit" value="Stats">
+		</form></div>
+	</div>
+	<br>
+	<!-- Add Page Spacific Code Here -->
+	<div class="w3-card-4">
+		<div class="w3-padding-32 w3-light-grey">
+			<h2>  Add a Cigar</h2>
+			<form class="w3-container" enctype="multipart/form-data" method="POST" action="/addevent">
+				<br>
+				<label><strong>Location</strong></label>
+				<input class="w3-input w3-border-0" type="text" name="name-location" id="location" placeholder="Location" required>
+				<label><strong>Cigar Smoked</strong></label>
+				<!--<input class="w3-input w3-border-0" type="text" name="name-cigar" id="cigar" placeholder="Cigar Index" required>-->
+				<select name="name-cigar" id="cigarDropDown">
+					<option value='none'>Select a Cigar</option>
+					<!-- code added by JS (loadDropDown) -->
+				</select><br>
+				<label><strong>Participant 1</strong></label>
+				<input class="w3-input w3-border-0" type="text" name="name-part1" id="part1" placeholder="Participant" required>
+				<label><strong>Participant 2</strong></label>
+				<input class="w3-input w3-border-0" type="text" name="name-part2" id="part2" placeholder="Participant" required>
+				<label><strong>Pairing</strong></label>
+				<input class="w3-input w3-border-0" type="text" name="name-pairing" id="pairing" placeholder="Pairing" required>
+				<label><strong>Rating</strong></label>
+				<input class="w3-input w3-border-0" type="text" name="name-rating" id="rating" placeholder="Rating" required>
+				<br>
+				<label><strong>Event Photo</strong></label>
+				<input type="file" name="name-photo" id="photo">
+				<br>
+				<input class="w3-btn w3-grey" type="submit" name="subcigar" value="Add Event" align="center">
+				<br>
+			</form> 
+		</div>
+	</div>
+</body>
+<script>
+window.onload = function () {
+	{% if error %}
+    	alert({{error|safe}});
+    {% else %}
+    	loadDropDown();
+  	{% endif %}
+}
+function loadDropDown(){
+	var cigarID = {{ids|safe}};
+	var cigarName = {{name|safe}};
+	var cigarQty = {{qty|safe}}
+	var len = {{length|safe}};
+	var i = 1;
+
+	while(i <= len){
+		if(cigarQty[i-1] > 0){
+			var add = "";
+			add += "<option  value='";
+			add += cigarID[i-1];
+			add += "'>";
+			add += cigarName[i-1];
+			add += "</option>";
+			document.getElementById("cigarDropDown").innerHTML += add;
+		}
+		i = i + 1;
+	}
+}
+
+</script>
+</html>

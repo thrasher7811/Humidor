@@ -1,0 +1,63 @@
+<!--
+   dataDisplay.html  
+   
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>My Humidor</title>
+	<meta http-equiv="refresh" content="60">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="Cache-control" content="no-cache" />
+	<meta name="generator" content="Geany 1.32" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href= "{{ url_for('static',filename='styles/w3.css') }}">
+</head>
+
+<body bgcolor="#4d4d4d">
+	<div class="w3-padding-32 w3-black" align="center">
+		<h1>My Humidor</h1>
+		<h3>Home</h3>
+	</div>
+	<div class="w3-padding-16" align="center">
+		<!-- Home Button -->
+		<div style="width:22%; display: inline-block"><form action="/">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Home">
+		</form></div>
+		<!-- Cigars Button -->
+		<div style="width:22%; display: inline-block"><form action="/cigars">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Cigars">
+		</form></div>
+		<!-- Smokes Button -->
+		<div style="width:22%; display: inline-block"><form action="/events">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Events">
+		</form></div>
+		<!-- Stats Button -->
+		<div style="width:22%; display: inline-block"><form action="/stats">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Stats">
+		</form></div>
+	</div>
+	<br>
+	<!-- Add Page Spacific Code Here -->
+	<div class="w3-padding-32" style="align:center" align="center">
+		<div class="w3-blue  w3-circle w3-center" style="width:45%; display: inline-block">
+			<h1>Temp<br> {{ temperature }}</h1>
+		</div>
+		<div class="w3-green  w3-circle w3-center" style="width:45%; display: inline-block">
+			<h1>Humi<br> {{ humidity }}</h1>
+		</div>
+	</div>
+</body>
+<script>
+window.onload = function () {
+	{% if error %}
+    	alert({{error|safe}});
+    {% else %}
+
+  	{% endif %}
+}
+</script>
+</html>

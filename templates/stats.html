@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+
+	<title>My Humidor</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="Cache-control" content="no-cache" />
+	<meta name="generator" content="Geany 1.32" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href= "{{ url_for('static',filename='styles/w3.css') }}">
+	<script src="{{ url_for('static',filename='styles/chart.css') }}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+</head>
+<body>
+
+
+<body bgcolor="#4d4d4d">
+	<div class="w3-padding-32 w3-black" align="center">
+		<h1>My Humidor</h1>
+		<h3>Statistics</h3>
+	</div>
+	<div class="w3-padding-16" align="center">
+		<!-- Home Button -->
+		<div style="width:22%; display: inline-block"><form action="/">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Home">
+		</form></div>
+		<!-- Cigars Button -->
+		<div style="width:22%; display: inline-block"><form action="/cigars">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Cigars">
+		</form></div>
+		<!-- Smokes Button -->
+		<div style="width:22%; display: inline-block"><form action="/events">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Events">
+		</form></div>
+		<!-- Stats Button -->
+		<div style="width:22%; display: inline-block"><form action="/stats">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Stats">
+		</form></div>
+	</div>
+
+
+ <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<!--<canvas class="my-4" id="chartContainer" width="900" height="300"></canvas>-->
+
+</body>
+
+<script>
+
+window.onload = function () {
+	{% if error %}
+    	alert({{error|safe}});
+    {% else %}
+    	loadChart();
+  	{% endif %}
+}
+
+function loadChart(){
+
+var dataPoints1 = [];
+var dataPoints2 = [];
+var humidorT = {{ humidorT|safe }};
+
+var humidorH = {{ humidorH|safe }};
+
+var date = {{ date|safe }};
+
+var length = {{ length|safe }};
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	zoomEnabled: true,
+	title: {
+		text: "My Humidor"
+	},
+	axisX: {
+		title: "Date and Time"
+	},
+	axisY:{
+		prefix: "",
+		includeZero: false
+	}, 
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor:"pointer",
+		verticalAlign: "top",
+		fontSize: 22,
+		fontColor: "dimGrey",
+		itemclick : toggleDataSeries
+	},
+	data: [{ 
+		type: "line",
+		xValueType: "dateTime",
+		yValueFormatString: "###.0 F",
+		xValueFormatString: "MMM DD YYYY - hh TT",
+		showInLegend: true,
+		name: "Temerature",
+		dataPoints: dataPoints1
+		},
+		{				
+			type: "line",
+			xValueType: "dateTime",
+			yValueFormatString: "###.0 '%'",
+			showInLegend: true,
+			name: "Humidity" ,
+			dataPoints: dataPoints2
+	}]
+});
+
+function toggleDataSeries(e) {
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else {
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
+function updateChart(length) {
+
+	// pushing the new values
+	var i;
+	for(i = 0; i < length; i++){
+		dataPoints1.push({
+			x: new Date(date[i]),
+			y: humidorT[i]
+		});
+		dataPoints2.push({
+			x: new Date(date[i]),
+			y: humidorH[i]
+		});
+		
+	}
+
+	}
+	
+	updateChart(length);
+	
+	chart.render();
+}
+</script>
+
+</html>

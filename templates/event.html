@@ -1,0 +1,213 @@
+<!--
+   dataDisplay.html  
+   
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>My Humidor</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="Cache-control" content="no-cache" />
+	<meta name="generator" content="Geany 1.32" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href= "{{ url_for('static',filename='styles/w3.css') }}">
+</head>
+
+<body bgcolor="#4d4d4d">
+	<div class="w3-padding-32 w3-black" align="center">
+		<h1>My Humidor</h1>
+		<h3>Events</h3>
+	</div>
+	<div class="w3-padding-16" align="center">
+		<!-- Home Button -->
+		<div style="width:22%; display: inline-block"><form action="/">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Home">
+		</form></div>
+		<!-- Cigars Button -->
+		<div style="width:22%; display: inline-block"><form action="/cigars">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Cigars">
+		</form></div>
+		<!-- Smokes Button -->
+		<div style="width:22%; display: inline-block"><form action="/events">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Events">
+		</form></div>
+		<!-- Stats Button -->
+		<div style="width:22%; display: inline-block"><form action="/stats">
+		<input class="w3-button w3-grey w3-block"  type="submit" value="Stats">
+		</form></div>
+	</div>
+	<br>
+	<!-- Add Page Spacific Code Here -->
+	<ul id="eventList" class="w3-ul w3-card-4">
+		<!-- List code dynamically added here -->
+	</ul>
+	<!-- button to go to page for adding a cigar -->
+	<br>
+	<div class="w3-right-align">
+		<form action="/addevent">
+			<input class="w3-button w3-circle w3-xlarge w3-black" type="submit" value="+">
+		</form>
+	</div>
+
+</body>
+<!-- Modal Code Location -->
+<!-- The Modal -->
+<div id="modalEvent" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <ul id="eventStatsModal">
+    </ul>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+//get modal content and variables
+var modal = document.getElementById('modalEvent');
+var span = document.getElementById("closeModal");
+
+window.onload = function () {
+	{% if error %}
+    	alert({{error|safe}});
+    {% else %}
+    	loadEvents();
+  	{% endif %}
+}
+
+
+function loadEvents(){
+	var ids = {{ids|safe}};
+	var entered = {{entered|safe}};
+	var location = {{location|safe}};
+	var cigar = {{cigar|safe}};
+	var participant1 = {{participant1|safe}};
+	var participant2 = {{participant2|safe}};
+	var pairing = {{pairing|safe}};
+	var rating = {{rating|safe}};
+	var picture = {{picture|safe}};
+	var len2 = {{length|safe}};
+
+	var i = 1;
+
+	while(i <= len2){
+		//create the item to be inserted into the list
+		var newListItem = "";
+		newListItem += "<li class='w3-bar w3-light-grey' onclick='getEventInfo(" + i + ")'>";
+		newListItem += "<img src='/static/pictures/" + picture[i-1] + "' class='w3-bar-item w3-circle w3-hide-small' style='width:85px'>";
+		newListItem += "<div class='w3-bar-item'>";
+		newListItem += "<span class='w3-large'>" + location[i-1] + "</span><br>";
+		newListItem += "<span>" + entered[i-1] + "</span>";
+		newListItem += "</div>";
+		newListItem += "</li>";
+
+		// insert the new item 
+		document.getElementById("eventList").innerHTML += newListItem;
+		i = i + 1;
+	}
+	
+}
+
+function getEventInfo(index){
+	var ids = {{ids|safe}};
+	var entered = {{entered|safe}};
+	var location = {{location|safe}};
+	var cigar = {{cigar|safe}};
+	var cigarName = {{cigarName|safe}};
+	var participant1 = {{participant1|safe}};
+	var participant2 = {{participant2|safe}};
+	var pairing = {{pairing|safe}};
+	var rating = {{rating|safe}};
+	var picture = {{picture|safe}};
+	var eventIndex = index - 1;
+	//load the info to the modal window script
+	var addtext = "";
+	addtext += "<img src='/static/pictures/" + picture[eventIndex] + "' class='center'>";
+	addtext += "<li class='w3-margin-right'>Location:    " + location[eventIndex] + "</li>";
+	addtext += "<li class='w3-margin-right'>Cigar:   " + cigarName[cigar[eventIndex] - 1] + "</li>";
+	addtext += "<li class='w3-margin-right'>Participant 1:     " + participant1[eventIndex] + "</li>";
+	addtext += "<li class='w3-margin-right'>Participant 2:    " + participant2[eventIndex] + "</li>";
+	addtext += "<li class='w3-margin-right'>Paired with:  " + pairing[eventIndex] + "</li>";
+	addtext += "<li class='w3-margin-right'>Rating:  " + rating[eventIndex] + "</li>";
+	//add buttons for updating quantity and removing cigar
+	addtext += "<form method='POST' action='/removeEvent'>";
+	addtext += "<input type='hidden' name='eventid' value='" + ids[eventIndex] + "'>";
+	addtext += "<input type='hidden' name='cigarid' value='" + cigar[eventIndex] + "'>";
+ 	addtext += "<input class='w3-btn w3-small w3-rounded w3-red w3-right' type='submit' name='removeevent' value='Delete Event'>";
+	addtext += "</form>";
+	document.getElementById('eventStatsModal').innerHTML = addtext;
+	
+	//open the modal
+	modal.style.display = "block";
+ 
+}
+// close modal on X click
+span.onclick = function() {
+    modal.style.display = "none";
+}
+//close the modal when click is outside window
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}
+.right {
+	display: block;
+	margin-left: auto;
+	width: 20%;
+}
+</style>
+</html>
